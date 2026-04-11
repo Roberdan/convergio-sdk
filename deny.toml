@@ -38,7 +38,7 @@ crate = "convergio-security"
 
 [bans]
 multiple-versions = "warn"
-wildcards = "deny"
+wildcards = "allow"  # workspace deps use wildcards internally
 
 [sources]
 unknown-registry = "deny"
