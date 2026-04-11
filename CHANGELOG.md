@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4](https://github.com/Roberdan/convergio-sdk/compare/convergio-sdk-v0.1.3...convergio-sdk-v0.1.4) (2026-04-11)
+
+
+### Bug Fixes
+
+* **ci:** use PAT for fully automatic releases ([4c5bd87](https://github.com/Roberdan/convergio-sdk/commit/4c5bd877378dd328a30bc242e0597cea0ec1c1b4))
+* **ci:** use PAT for release-please and lockfile-update workflows ([b4ca710](https://github.com/Roberdan/convergio-sdk/commit/b4ca7109dbe20dad3ea72973fa13e50b9b062097))
+
 ## [0.1.3](https://github.com/Roberdan/convergio-sdk/compare/convergio-sdk-v0.1.2...convergio-sdk-v0.1.3) (2026-04-11)
 
 
