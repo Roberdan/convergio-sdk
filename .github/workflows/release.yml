@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,6 +16,5 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v4
         with:
-          release-type: rust
           manifest-file: .release-please-manifest.json
           config-file: release-please-config.json

@@ -1,12 +1,24 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
-    "crates/convergio-types": {
+    ".": {
       "release-type": "simple",
       "component": "convergio-sdk",
-      "changelog-path": "../../CHANGELOG.md",
+      "changelog-path": "CHANGELOG.md",
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true
+      "bump-patch-for-minor-pre-major": true,
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "Cargo.toml",
+          "jsonpath": "$.workspace.package.version"
+        },
+        {
+          "type": "toml",
+          "path": "crates/convergio-types/Cargo.toml",
+          "jsonpath": "$.package.version"
+        }
+      ]
     }
   },
   "changelog-sections": [
