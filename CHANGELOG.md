@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5](https://github.com/Roberdan/convergio-sdk/compare/convergio-sdk-v0.1.4...convergio-sdk-v0.1.5) (2026-04-11)
+
+
+### Features
+
+* quality framework — adversarial tests, cargo-deny, ADR, agent-first docs ([bb7118d](https://github.com/Roberdan/convergio-sdk/commit/bb7118d53afa1233339675b06f0468cf505dbd89))
+* quality framework — adversarial tests, cargo-deny, ADR, agent-first docs ([71e8e5c](https://github.com/Roberdan/convergio-sdk/commit/71e8e5c66c7ef290dddef8f3a5d15ee4e57d9bfa))
+
+
+### Bug Fixes
+
+* add MPL-2.0 to license whitelist (option-ext dep) ([4d5a71c](https://github.com/Roberdan/convergio-sdk/commit/4d5a71c86cc6d0270ae33426417790043b592d7a))
+* allow workspace wildcard deps in cargo-deny ([495971f](https://github.com/Roberdan/convergio-sdk/commit/495971f84af5d7b357734717d8e5f243efac1482))
+* update deny.toml to v2 format ([a9c793f](https://github.com/Roberdan/convergio-sdk/commit/a9c793f260c8baaf2ba4bb080d5d368c09a14ae7))
+
 ## [0.1.4](https://github.com/Roberdan/convergio-sdk/compare/convergio-sdk-v0.1.3...convergio-sdk-v0.1.4) (2026-04-11)
 
 
