@@ -17,6 +17,21 @@
           "type": "toml",
           "path": "crates/convergio-types/Cargo.toml",
           "jsonpath": "$.package.version"
+        },
+        {
+          "type": "toml",
+          "path": "crates/convergio-telemetry/Cargo.toml",
+          "jsonpath": "$.package.version"
+        },
+        {
+          "type": "toml",
+          "path": "crates/convergio-db/Cargo.toml",
+          "jsonpath": "$.package.version"
+        },
+        {
+          "type": "toml",
+          "path": "crates/convergio-security/Cargo.toml",
+          "jsonpath": "$.package.version"
         }
       ]
     }
