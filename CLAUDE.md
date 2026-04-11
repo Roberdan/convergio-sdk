@@ -1,57 +1,31 @@
 # CLAUDE.md — convergio-sdk
 
-> Claude Code-specific instructions. Read `AGENTS.md` first for universal rules.
+Read `AGENTS.md` first. This file adds Claude Code-specific behavior.
 
-Conversation in **Italian**, code in **English**.
-Co-Authored-By: use your model name (e.g. `Claude Opus 4.6`)
+Conversation: **Italian**. Code + docs: **English**.
+Co-Authored-By: your model name (e.g. `Claude Opus 4.6`)
+PRs: auto-merged when CI green. Branch auto-deleted.
 
-## What this is
-
-The foundational SDK for all Convergio crates. Contains the shared contracts,
-observability, security, and database primitives that every crate in the ecosystem uses.
-
-## Structure
+## Crate layout
 
 ```
 crates/
-├── convergio-types/      — Extension trait, Manifest, DomainEvent, ApiError, Config (~1200 LOC)
-├── convergio-telemetry/  — Tracing, metrics, health aggregation (~370 LOC)
-├── convergio-db/         — r2d2 SQLite pool, migration runner, schema registry (~480 LOC)
-└── convergio-security/   — JWT, AEAD, RBAC, audit, trust, sandbox, SSRF (~1550 LOC)
+├── convergio-types/      — Extension, Manifest, DomainEvent, ApiError
+├── convergio-telemetry/  — tracing, health registry, metrics
+├── convergio-db/         — r2d2 SQLite pool, migration runner
+└── convergio-security/   — JWT, AEAD, RBAC, audit, trust, SSRF
 ```
 
-## Dependency graph
+Deps: telemetry → types, db → types, security → types + db
 
-```
-convergio-telemetry → convergio-types
-convergio-db        → convergio-types
-convergio-security  → convergio-types + convergio-db
-```
+## Workflow
 
-## Rules
+1. Read AGENTS.md for build/test/rules
+2. Work in worktree: `git worktree add .worktrees/fix-name -b fix/name`
+3. Commit conventional, push, create PR with 5 sections
+4. Never merge — auto-merge handles it after CI green
 
-- Max 300 lines per file
-- English only (code + docs). Conversation in Italian.
-- Conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
-- Every public type must have doc comments
-- Breaking changes require a minor version bump (pre-1.0) or major bump (post-1.0)
+## SDK boundary
 
-## Build & Test
-
-```bash
-cargo fmt --all -- --check
-RUSTFLAGS="-Dwarnings" cargo clippy --workspace --all-targets --locked
-cargo test --workspace --locked
-```
-
-## This SDK is consumed by
-
-All 36+ crates in the Convergio ecosystem via git dependency.
-Changes here affect everything — be careful and deliberate.
-
-## What belongs here vs. in a domain crate
-
-SDK = what EVERY Convergio crate needs to function.
-If only some crates use it, it's a domain crate with its own repo.
-
-Examples of what does NOT belong here: IPC, mesh, inference, knowledge.
+SDK = what EVERY crate needs. If only some use it → domain crate, own repo.
+Not SDK: IPC, mesh, inference, knowledge.

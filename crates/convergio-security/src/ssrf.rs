@@ -22,10 +22,14 @@ pub fn is_private_ip(ip: IpAddr) -> bool {
             || v4.is_unspecified()
         }
         IpAddr::V6(v6) => {
+            // WHY: ::ffff:127.0.0.1 is IPv4-mapped IPv6 — common SSRF bypass
+            if let Some(v4) = v6.to_ipv4_mapped() {
+                return is_private_ip(IpAddr::V4(v4));
+            }
             v6.is_loopback() || v6.is_unspecified()
-            // fe80::/10 (link-local) — check first 10 bits
+            // fe80::/10 (link-local)
             || (v6.segments()[0] & 0xffc0) == 0xfe80
-            // fc00::/7 (unique local) — check first 7 bits
+            // fc00::/7 (unique local)
             || (v6.segments()[0] & 0xfe00) == 0xfc00
         }
     }
