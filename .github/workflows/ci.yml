@@ -18,47 +18,12 @@ on:
       - "deny.toml"
       - ".github/workflows/ci.yml"
 
-env:
-  CARGO_TERM_COLOR: always
-  RUSTFLAGS: "-Dwarnings"
-
 jobs:
-  check:
-    name: Check & Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-
-      - name: Cache Rust
-        uses: Swatinem/rust-cache@v2
-
-      - name: Format check
-        run: cargo fmt --all -- --check
-
-      - name: Clippy (zero warnings)
-        run: cargo clippy --workspace --all-targets --locked
-
-      - name: Test (unit + integration + adversarial)
-        run: cargo test --workspace --locked
-
-  security:
-    name: Security & Policy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install tools
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-audit,cargo-deny
-
-      - name: Audit (CVE check)
-        run: cargo audit
-
-      - name: Deny (license + dependency policy)
-        run: cargo deny check
+  ci:
+    uses: Roberdan/convergio/.github/workflows/reusable-ci-rust.yml@main
+    with:
+      coverage-threshold: 80
+      run-deny: true
+      run-semver: true
+      run-udeps: true
+      run-mutants: true

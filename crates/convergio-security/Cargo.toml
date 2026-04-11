@@ -20,3 +20,8 @@ rusqlite = { workspace = true }
 axum = { workspace = true }
 getrandom = { workspace = true }
 chacha20poly1305 = { workspace = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tower = { version = "0.4", features = ["util"] }
+http-body-util = "0.1"

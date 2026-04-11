@@ -5,17 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   release:
-    name: Release Please
-    runs-on: ubuntu-latest
-    steps:
-      - uses: googleapis/release-please-action@v4
-        with:
-          manifest-file: .release-please-manifest.json
-          config-file: release-please-config.json
-          token: ${{ secrets.PAT }}
+    uses: Roberdan/convergio/.github/workflows/reusable-release-rust.yml@main
+    with:
+      generate-sbom: true
+    secrets:
+      PAT: ${{ secrets.PAT }}
