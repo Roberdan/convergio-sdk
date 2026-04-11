@@ -94,7 +94,14 @@ fn trust_level_from_i64_all_variants() {
 #[test]
 fn trust_set_and_get() {
     let conn = setup_conn();
-    trust::set_trust(&conn, "peer-alpha", TrustLevel::Elevated, "admin", "verified").unwrap();
+    trust::set_trust(
+        &conn,
+        "peer-alpha",
+        TrustLevel::Elevated,
+        "admin",
+        "verified",
+    )
+    .unwrap();
     assert_eq!(trust::get_trust(&conn, "peer-alpha"), TrustLevel::Elevated);
 }
 
@@ -148,8 +155,13 @@ fn secret_filter_register_and_list() {
     let empty = trust::list_secret_filters(&conn);
     assert!(empty.is_empty());
 
-    trust::register_secret_filter(&conn, "PROD_SECRET", TrustLevel::Elevated, "production API key")
-        .unwrap();
+    trust::register_secret_filter(
+        &conn,
+        "PROD_SECRET",
+        TrustLevel::Elevated,
+        "production API key",
+    )
+    .unwrap();
     trust::register_secret_filter(&conn, "LOG_LEVEL", TrustLevel::Untrusted, "safe to share")
         .unwrap();
 
@@ -189,7 +201,11 @@ fn can_access_secret_based_on_trust() {
     trust::register_secret_filter(&conn, "PUBLIC_VAR", TrustLevel::Untrusted, "public").unwrap();
 
     // Basic peer cannot access Elevated-required secret
-    assert!(!trust::can_access_secret(&conn, "low-peer", "PRIVILEGED_KEY"));
+    assert!(!trust::can_access_secret(
+        &conn,
+        "low-peer",
+        "PRIVILEGED_KEY"
+    ));
     // Basic peer can access Untrusted-required var
     assert!(trust::can_access_secret(&conn, "low-peer", "PUBLIC_VAR"));
     // Unknown var defaults to Standard requirement — Basic cannot access
@@ -310,8 +326,14 @@ fn sandbox_get_custom_returns_none_if_absent() {
 
 #[test]
 fn rbac_coordinator_accesses_anything() {
-    assert!(rbac::role_can_access(&jwt::AgentRole::Coordinator, "/api/security/trust"));
-    assert!(rbac::role_can_access(&jwt::AgentRole::Coordinator, "/api/admin/secret"));
+    assert!(rbac::role_can_access(
+        &jwt::AgentRole::Coordinator,
+        "/api/security/trust"
+    ));
+    assert!(rbac::role_can_access(
+        &jwt::AgentRole::Coordinator,
+        "/api/admin/secret"
+    ));
 }
 
 #[test]
@@ -352,12 +374,18 @@ fn rbac_executor_allowed_routes() {
         &jwt::AgentRole::Executor,
         "/api/plan-db/kb"
     ));
-    assert!(rbac::role_can_access(&jwt::AgentRole::Executor, "/api/build"));
+    assert!(rbac::role_can_access(
+        &jwt::AgentRole::Executor,
+        "/api/build"
+    ));
     assert!(rbac::role_can_access(
         &jwt::AgentRole::Executor,
         "/api/build/foo"
     ));
-    assert!(rbac::role_can_access(&jwt::AgentRole::Executor, "/api/test"));
+    assert!(rbac::role_can_access(
+        &jwt::AgentRole::Executor,
+        "/api/test"
+    ));
     assert!(rbac::role_can_access(
         &jwt::AgentRole::Executor,
         "/api/test/foo"
