@@ -7,6 +7,7 @@ on:
       - "crates/**"
       - "Cargo.toml"
       - "Cargo.lock"
+      - "deny.toml"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
@@ -14,44 +15,15 @@ on:
       - "crates/**"
       - "Cargo.toml"
       - "Cargo.lock"
+      - "deny.toml"
       - ".github/workflows/ci.yml"
 
-env:
-  CARGO_TERM_COLOR: always
-  RUSTFLAGS: "-Dwarnings"
-
 jobs:
-  check:
-    name: Check & Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-
-      - name: Cache Rust
-        uses: Swatinem/rust-cache@v2
-
-      - name: Format check
-        run: cargo fmt --all -- --check
-
-      - name: Clippy
-        run: cargo clippy --workspace --all-targets --locked
-
-      - name: Test
-        run: cargo test --workspace --locked
-
-  security:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install cargo-audit
-        uses: taiki-e/install-action@cargo-audit
-
-      - name: Run audit
-        run: cargo audit
+  ci:
+    uses: Roberdan/convergio/.github/workflows/reusable-ci-rust.yml@main
+    with:
+      coverage-threshold: 80
+      run-deny: true
+      run-semver: true
+      run-udeps: true
+      run-mutants: true
