@@ -9,14 +9,9 @@
       "bump-patch-for-minor-pre-major": true,
       "extra-files": [
         {
-          "type": "toml",
-          "path": "Cargo.toml",
-          "jsonpath": "$.workspace.package.version"
-        },
-        {
-          "type": "toml",
+          "type": "generic",
           "path": "crates/convergio-types/Cargo.toml",
-          "jsonpath": "$.package.version"
+          "glob": false
         }
       ]
     }
