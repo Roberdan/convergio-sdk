@@ -1,0 +1,43 @@
+# cargo-deny configuration
+# Docs: https://embarkstudios.github.io/cargo-deny/
+
+[advisories]
+vulnerability = "deny"
+unmaintained = "warn"
+yanked = "deny"
+
+[licenses]
+unlicensed = "deny"
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+    "Zlib",
+]
+confidence-threshold = 0.8
+
+[[licenses.exceptions]]
+allow = ["LicenseRef-Convergio-Community"]
+name = "convergio-types"
+[[licenses.exceptions]]
+allow = ["LicenseRef-Convergio-Community"]
+name = "convergio-telemetry"
+[[licenses.exceptions]]
+allow = ["LicenseRef-Convergio-Community"]
+name = "convergio-db"
+[[licenses.exceptions]]
+allow = ["LicenseRef-Convergio-Community"]
+name = "convergio-security"
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "allow"  # We use git deps for SDK
+allow-git = ["https://github.com/Roberdan/convergio-sdk"]
