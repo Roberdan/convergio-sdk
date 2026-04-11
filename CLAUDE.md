@@ -1,6 +1,9 @@
 # CLAUDE.md — convergio-sdk
 
-> Agent instructions for the Convergio SDK repository.
+> Claude Code-specific instructions. Read `AGENTS.md` first for universal rules.
+
+Conversation in **Italian**, code in **English**.
+Co-Authored-By: use your model name (e.g. `Claude Opus 4.6`)
 
 ## What this is
 
