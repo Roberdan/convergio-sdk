@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6](https://github.com/Roberdan/convergio-sdk/compare/convergio-sdk-v0.1.5...convergio-sdk-v0.1.6) (2026-04-11)
+
+
+### Features
+
+* complete Fase A — reusable workflows, scorecard, SBOM, ADR-003 ([40eb7eb](https://github.com/Roberdan/convergio-sdk/commit/40eb7ebf0b6d9d14868600586dbda0b4a9f0a760))
+* complete Fase A — reusable workflows, scorecard, SBOM, CONSTITUTION, ADR-003 ([6390704](https://github.com/Roberdan/convergio-sdk/commit/63907042b2957757b1f6dfe82de78a0ac203504b))
+
+
+### Bug Fixes
+
+* keep manifesto full text in README, add canonical source link ([4b17931](https://github.com/Roberdan/convergio-sdk/commit/4b17931eb52da242710e1f808a67b1a2d4983753))
+
 ## [0.1.5](https://github.com/Roberdan/convergio-sdk/compare/convergio-sdk-v0.1.4...convergio-sdk-v0.1.5) (2026-04-11)
 
 

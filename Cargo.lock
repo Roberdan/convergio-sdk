@@ -247,7 +247,7 @@ dependencies = [
 
 [[package]]
 name = "convergio-db"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "chrono",
  "convergio-types",
@@ -261,7 +261,7 @@ dependencies = [
 
 [[package]]
 name = "convergio-security"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "axum",
  "base64",
@@ -284,7 +284,7 @@ dependencies = [
 
 [[package]]
 name = "convergio-telemetry"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "convergio-types",
  "serde",
@@ -296,7 +296,7 @@ dependencies = [
 
 [[package]]
 name = "convergio-types"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "axum",
  "chrono",
