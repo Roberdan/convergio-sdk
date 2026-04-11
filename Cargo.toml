@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
-members = ["crates/convergio-types"]
+members = [
+    "crates/convergio-types",
+    "crates/convergio-telemetry",
+    "crates/convergio-db",
+    "crates/convergio-security",
+]
 
 [workspace.package]
 version = "0.1.0" # x-release-please-version
@@ -9,9 +14,25 @@ license = "LicenseRef-Convergio-Community"
 repository = "https://github.com/Roberdan/convergio-sdk"
 
 [workspace.dependencies]
+# Internal crates
+convergio-types = { path = "crates/convergio-types" }
+convergio-db = { path = "crates/convergio-db" }
+
+# Shared deps
 thiserror = "1"
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 axum = { version = "0.7", features = ["ws", "multipart"] }
 dirs = "6"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-appender = "0.2"
+rusqlite = { version = "0.32", features = ["bundled"] }
+r2d2 = "0.8"
+r2d2_sqlite = "0.25"
+hmac = "0.12"
+sha2 = "0.10"
+base64 = "0.22"
+getrandom = "0.2"
+chacha20poly1305 = "0.10"
