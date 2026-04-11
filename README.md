@@ -6,6 +6,7 @@
 [![Rust](https://img.shields.io/badge/rust-stable-orange)](https://www.rust-lang.org/)
 [![Zero Warnings](https://img.shields.io/badge/warnings-0-brightgreen)](#)
 [![Adversarial Tests](https://img.shields.io/badge/adversarial_tests-17-brightgreen)](#)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Roberdan/convergio-sdk/badge)](https://scorecard.dev/viewer/?uri=github.com/Roberdan/convergio-sdk)
 
 Core SDK for the [Convergio](https://github.com/Roberdan/convergio) ecosystem.
 
@@ -65,6 +66,13 @@ graph TD
 | Dependency audit (CVE) | `cargo audit` | CI blocks merge |
 | License + dependency policy | `cargo deny check` | CI blocks merge |
 | Format | `cargo fmt --check` | CI blocks merge |
+| Coverage ≥80% | `cargo tarpaulin --fail-under 80` | CI blocks merge |
+| Semver compatibility | `cargo semver-checks` | CI blocks merge (PR) |
+| Unused dependencies | `cargo udeps` | CI blocks merge |
+| Conventional commits | PR title lint | CI blocks merge (PR) |
+| Mutation testing | `cargo mutants` | Informational |
+| OpenSSF Scorecard | `ossf/scorecard-action` | Weekly scan |
+| SBOM (CycloneDX) | `cargo cyclonedx` | On release |
 | Auto-release | release-please + PAT | Fully automatic |
 
 ## Usage
@@ -92,27 +100,10 @@ Convergio Community License v1.3 — see [LICENSE](LICENSE).
 
 ---
 
-<!-- Copyright (c) 2026 Roberto D'Angelo. CC-BY-4.0. -->
+## Agentic Manifesto
 
-## The Agentic Manifesto
+See the full [Agentic Manifesto](https://github.com/Roberdan/convergio/blob/main/AgenticManifesto.md) — the guiding philosophy behind Convergio.
 
-*Human purpose. AI momentum.*
-Milano — 23 June 2025
+---
 
-**What we believe**
-1. **Intent is human, momentum is agent.**
-2. **Impact must reach every mind and body.**
-3. **Trust grows from transparent provenance.**
-4. **Progress is judged by outcomes, not output.**
-
-**How we act**
-1. **Humans stay accountable for decisions and effects.**
-2. **Agents amplify capability, never identity.**
-3. **We design from the edge first: disability, language, connectivity.**
-4. **Safety rails precede scale.**
-5. **Learn in small loops, ship value early.**
-6. **Bias is a bug—we detect, test, and fix continuously.**
-
-*Signed in Milano, 23 June 2025 — Roberto D'Angelo · Claude · ChatGPT*
-
-*Made with ❤️ for Mario in Milano, Italy, Europe.*
+© 2025-present Roberto D'Angelo. All rights reserved.
