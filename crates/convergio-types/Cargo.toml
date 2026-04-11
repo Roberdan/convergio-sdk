@@ -12,3 +12,6 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 axum = { workspace = true }
 dirs = { workspace = true }
+
+[dev-dependencies]
+toml = "0.8"

@@ -62,3 +62,9 @@ fn metrics_collector_empty() {
     let metrics = collector.collect_all();
     assert!(metrics.is_empty());
 }
+
+#[test]
+fn logging_test_init_works() {
+    convergio_telemetry::logging::test_init();
+    tracing::info!("coverage test message");
+}

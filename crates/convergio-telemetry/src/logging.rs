@@ -147,3 +147,35 @@ fn install_panic_hook(log_dir: &std::path::Path) {
             .and_then(|mut f| std::io::Write::write_all(&mut f, msg.as_bytes()));
     }));
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn log_dir_is_under_logs() {
+        let dir = log_dir();
+        assert!(dir.ends_with("logs"));
+    }
+
+    #[test]
+    fn default_filter_parses() {
+        let _filter = default_filter();
+        // If we get here, the filter parsed successfully
+    }
+
+    #[test]
+    fn test_init_idempotent() {
+        test_init();
+        test_init();
+        // Once ensures no panic on repeated calls
+    }
+
+    #[test]
+    fn install_panic_hook_no_crash() {
+        let dir = std::env::temp_dir().join("convergio-test-logs");
+        let _ = std::fs::create_dir_all(&dir);
+        install_panic_hook(&dir);
+        // If we get here, the hook was installed without panicking
+    }
+}
