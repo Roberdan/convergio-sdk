@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9](https://github.com/Roberdan/convergio-sdk/compare/v0.1.8...v0.1.9) (2026-04-12)
+
+
+### Documentation
+
+* add .env.example with required environment variables ([#21](https://github.com/Roberdan/convergio-sdk/issues/21)) ([e919cbc](https://github.com/Roberdan/convergio-sdk/commit/e919cbc98ed647bc5a4d9821c8fe1d6946b286dc))
+
 ## [0.1.8](https://github.com/Roberdan/convergio-sdk/compare/v0.1.7...v0.1.8) (2026-04-12)
 
 
