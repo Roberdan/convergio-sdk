@@ -18,11 +18,16 @@ pub fn convergio_data_dir() -> PathBuf {
 }
 
 /// Output directory for a named project.
-pub fn project_output_dir(project_name: &str) -> PathBuf {
-    convergio_data_dir()
+/// The project name is validated to prevent path traversal.
+pub fn project_output_dir(project_name: &str) -> Result<PathBuf, String> {
+    validate_path_components(std::path::Path::new(project_name))?;
+    if project_name.is_empty() {
+        return Err("project name must not be empty".into());
+    }
+    Ok(convergio_data_dir()
         .join("projects")
         .join(project_name)
-        .join("output")
+        .join("output"))
 }
 
 /// Validate a path is within an allowed base directory. Prevents path traversal.
@@ -50,11 +55,15 @@ pub fn sanitize_path(
 
 /// Validate a path only contains safe characters (no traversal components).
 /// Does NOT require the path to exist yet (for create operations).
+/// Rejects absolute paths (`/foo`) and parent traversal (`..`).
 pub fn validate_path_components(path: &std::path::Path) -> Result<(), String> {
     for component in path.components() {
         match component {
             std::path::Component::ParentDir => {
                 return Err(format!("path traversal '..' in {}", path.display()));
+            }
+            std::path::Component::RootDir | std::path::Component::Prefix(_) => {
+                return Err(format!("absolute path not allowed: {}", path.display()));
             }
             std::path::Component::Normal(s) => {
                 let s = s.to_string_lossy();
@@ -87,7 +96,18 @@ mod tests {
 
     #[test]
     fn project_output_dir_structure() {
-        let out = project_output_dir("my-app");
+        let out = project_output_dir("my-app").unwrap();
         assert!(out.ends_with("projects/my-app/output"));
+    }
+
+    #[test]
+    fn project_output_dir_rejects_traversal() {
+        assert!(project_output_dir("../etc/passwd").is_err());
+        assert!(project_output_dir("").is_err());
+    }
+
+    #[test]
+    fn validate_rejects_absolute_path() {
+        assert!(validate_path_components(std::path::Path::new("/etc/passwd")).is_err());
     }
 }

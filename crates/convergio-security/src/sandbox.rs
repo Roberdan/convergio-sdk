@@ -81,8 +81,14 @@ pub fn get_custom_sandbox(conn: &Connection, peer: &str) -> Option<SandboxPolicy
                 allow_disk_write: row.get::<_, i64>(2)? != 0,
                 max_cpu_seconds: row.get::<_, i64>(3)? as u64,
                 max_memory_mb: row.get::<_, i64>(4)? as u64,
-                allowed_commands: serde_json::from_str(&cmds_json).unwrap_or_default(),
-                blocked_paths: serde_json::from_str(&paths_json).unwrap_or_default(),
+                allowed_commands: serde_json::from_str(&cmds_json).unwrap_or_else(|e| {
+                    tracing::warn!("corrupt allowed_commands JSON for {}: {e}", peer);
+                    vec![]
+                }),
+                blocked_paths: serde_json::from_str(&paths_json).unwrap_or_else(|e| {
+                    tracing::warn!("corrupt blocked_paths JSON for {}: {e}", peer);
+                    vec![]
+                }),
             })
         },
     )

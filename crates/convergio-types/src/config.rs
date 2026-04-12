@@ -60,11 +60,20 @@ impl Default for NodeConfig {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, Default)]
+#[derive(Clone, Deserialize, Default)]
 #[serde(default)]
 pub struct TailscaleConfig {
     pub enabled: bool,
     pub auth_key: String,
+}
+
+impl std::fmt::Debug for TailscaleConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("TailscaleConfig")
+            .field("enabled", &self.enabled)
+            .field("auth_key", &"[REDACTED]")
+            .finish()
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -147,11 +156,20 @@ impl Default for KernelConfig {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, Default)]
+#[derive(Clone, Deserialize, Default)]
 #[serde(default)]
 pub struct TelegramConfig {
     pub enabled: bool,
     pub token_keychain: String,
+}
+
+impl std::fmt::Debug for TelegramConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("TelegramConfig")
+            .field("enabled", &self.enabled)
+            .field("token_keychain", &"[REDACTED]")
+            .finish()
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
