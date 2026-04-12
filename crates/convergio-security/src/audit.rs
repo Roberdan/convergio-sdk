@@ -65,14 +65,36 @@ impl AuditChain {
         Ok(entry)
     }
 
-    /// Verify chain integrity.
+    /// Verify chain integrity — checks both hash links and recomputed hashes.
     pub fn verify(&self) -> Result<bool, SecurityError> {
         let entries = self
             .entries
             .lock()
             .map_err(|e| SecurityError::AuditError(format!("lock: {e}")))?;
-        for i in 1..entries.len() {
-            if entries[i].prev_hash != entries[i - 1].entry_hash {
+
+        let genesis_hash = "0".repeat(64);
+        for (i, entry) in entries.iter().enumerate() {
+            // Verify prev_hash link
+            let expected_prev = if i == 0 {
+                &genesis_hash
+            } else {
+                &entries[i - 1].entry_hash
+            };
+            if entry.prev_hash != *expected_prev {
+                return Ok(false);
+            }
+            // Recompute and verify entry_hash
+            let entry_data = format!(
+                "{}{}{}{}{}{}{}",
+                entry.id,
+                entry.agent_id,
+                entry.action,
+                entry.target,
+                entry.timestamp,
+                entry.params_hash,
+                entry.prev_hash
+            );
+            if sha256_hex(entry_data.as_bytes()) != entry.entry_hash {
                 return Ok(false);
             }
         }

@@ -10,6 +10,8 @@ pub struct RateLimiter {
     buckets: Mutex<HashMap<IpAddr, Bucket>>,
     max_tokens: u32,
     refill_per_sec: f64,
+    /// Maximum number of tracked IPs to prevent memory exhaustion.
+    max_buckets: usize,
 }
 
 struct Bucket {
@@ -24,6 +26,7 @@ impl RateLimiter {
             buckets: Mutex::new(HashMap::new()),
             max_tokens: max_per_minute,
             refill_per_sec: max_per_minute as f64 / 60.0,
+            max_buckets: 100_000,
         }
     }
 
@@ -31,6 +34,13 @@ impl RateLimiter {
     pub fn check(&self, ip: IpAddr) -> bool {
         let mut map = self.buckets.lock().unwrap_or_else(|e| e.into_inner());
         let now = Instant::now();
+
+        // Evict stale entries if bucket count exceeds limit
+        if map.len() >= self.max_buckets && !map.contains_key(&ip) {
+            let cutoff = now - std::time::Duration::from_secs(600);
+            map.retain(|_, b| b.last_refill > cutoff);
+        }
+
         let max = self.max_tokens as f64;
         let refill = self.refill_per_sec;
         let bucket = map.entry(ip).or_insert(Bucket {

@@ -28,7 +28,10 @@ pub fn init_jwt_secret(secret: Option<&[u8]>) {
 }
 
 fn get_secret() -> &'static [u8] {
-    JWT_SECRET.get().map(|v| v.as_slice()).unwrap_or(b"")
+    match JWT_SECRET.get() {
+        Some(v) if !v.is_empty() => v.as_slice(),
+        _ => panic!("JWT secret not initialized — call init_jwt_secret() at startup"),
+    }
 }
 
 /// Agent role for RBAC.
@@ -92,7 +95,7 @@ pub fn issue_token(
         role,
         cap: capabilities,
         iat: now,
-        exp: now + ttl_secs,
+        exp: now.saturating_add(ttl_secs),
     };
     encode(&claims)
 }
