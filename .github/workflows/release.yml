@@ -5,10 +5,99 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   release:
-    uses: Roberdan/convergio/.github/workflows/reusable-release-rust.yml@main
-    with:
-      generate-sbom: true
-    secrets:
-      PAT: ${{ secrets.PAT }}
+    name: Release Please
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          manifest-file: .release-please-manifest.json
+          config-file: release-please-config.json
+          token: ${{ secrets.PAT }}
+
+      - name: Auto-merge release PR
+        if: steps.release.outputs.pr
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+        run: |
+          PR_NUMBER=$(echo '${{ steps.release.outputs.pr }}' | jq -r '.number')
+          if [ "$PR_NUMBER" != "null" ] && [ -n "$PR_NUMBER" ]; then
+            gh pr merge "$PR_NUMBER" --squash --auto || true
+          fi
+
+  publish:
+    name: Publish SDK crates to crates.io
+    needs: release
+    if: needs.release.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      # Publish in dependency order:
+      # 1. types (no internal deps)
+      # 2. telemetry + db (depend on types)
+      # 3. security (depends on types + db)
+      - name: Publish convergio-types
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish -p convergio-types
+
+      - name: Wait for crates.io index
+        run: sleep 30
+
+      - name: Publish convergio-telemetry
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish -p convergio-telemetry
+
+      - name: Publish convergio-db
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish -p convergio-db
+
+      - name: Wait for crates.io index
+        run: sleep 30
+
+      - name: Publish convergio-security
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish -p convergio-security
+
+  sbom:
+    name: Generate SBOM
+    needs: release
+    if: needs.release.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install cargo-cyclonedx
+        run: cargo install cargo-cyclonedx --locked
+      - name: Generate SBOM
+        run: cargo cyclonedx --all --format json
+      - name: Upload SBOM to release
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+        run: |
+          while IFS= read -r bom; do
+            crate_name=$(basename "$(dirname "$bom")")
+            gh release upload "${{ needs.release.outputs.tag_name }}" \
+              "$bom#sbom-${crate_name}.cdx.json" \
+              --clobber
+          done < <(find . -name "bom.json" -not -path "*/target/*")
