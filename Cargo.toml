@@ -10,7 +10,7 @@ members = [
 [workspace.package]
 version = "0.1.9" # x-release-please-version
 edition = "2021"
-license = "LicenseRef-Convergio-Community"
+license = "MIT"
 repository = "https://github.com/Roberdan/convergio-sdk"
 
 [workspace.dependencies]
