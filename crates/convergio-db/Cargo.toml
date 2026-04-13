@@ -4,6 +4,12 @@ description = "Database pool, migration runner, schema registry"
 version = "0.1.9"
 edition.workspace = true
 license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords = ["convergio", "database", "migration", "sqlite", "pool"]
+categories = ["database"]
+readme = "README.md"
 
 [dependencies]
 convergio-types = { workspace = true }

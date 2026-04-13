@@ -4,6 +4,12 @@ description = "Core types, Extension trait, Manifest, DomainEvent — the contra
 version = "0.1.9" # x-release-please-version
 edition.workspace = true
 license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords = ["convergio", "ai-agents", "extension", "types", "daemon"]
+categories = ["development-tools"]
+readme = "README.md"
 
 [dependencies]
 thiserror = { workspace = true }

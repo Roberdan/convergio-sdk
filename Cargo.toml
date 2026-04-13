@@ -12,11 +12,13 @@ version = "0.1.9" # x-release-please-version
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/Roberdan/convergio-sdk"
+homepage = "https://github.com/Roberdan/convergio-sdk"
+authors = ["Roberto D'Angelo <roberto@convergio.io>"]
 
 [workspace.dependencies]
-# Internal crates
-convergio-types = { path = "crates/convergio-types" }
-convergio-db = { path = "crates/convergio-db" }
+# Internal crates — version required for crates.io, path for local dev
+convergio-types = { path = "crates/convergio-types", version = "0.1.9" }
+convergio-db = { path = "crates/convergio-db", version = "0.1.9" }
 
 # Shared deps
 thiserror = "1"
