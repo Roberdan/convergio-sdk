@@ -269,7 +269,7 @@ dependencies = [
  "chrono",
  "convergio-db",
  "convergio-types",
- "getrandom 0.2.17",
+ "getrandom 0.4.2",
  "hmac",
  "http-body-util",
  "rusqlite",
