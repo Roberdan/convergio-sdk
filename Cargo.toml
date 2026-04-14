@@ -34,7 +34,7 @@ rusqlite = { version = "0.32", features = ["bundled"] }
 r2d2 = "0.8"
 r2d2_sqlite = "0.25"
 hmac = "0.13"
-sha2 = "0.10"
+sha2 = "0.11"
 base64 = "0.22"
 getrandom = "0.4"
 chacha20poly1305 = "0.10"
